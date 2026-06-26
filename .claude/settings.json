@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(cat *)",
+      "Bash(git:*)",
+      "Bash(git *)",
+      "Bash(npm run:*)",
+      "Bash(npx vitest run *)",
+      "Bash(npx tsc --noEmit*)",
+      "Edit(src/**)",
+      "mcp__codegraph__codegraph_explore",
+      "mcp__codegraph__codegraph_search",
+      "mcp__codegraph__codegraph_node",
+      "mcp__codegraph__codegraph_callers",
+      "mcp__codegraph__codegraph_callees",
+      "mcp__codegraph__codegraph_impact",
+      "mcp__codegraph__codegraph_files",
+      "mcp__codegraph__codegraph_status"
+    ],
+    "deny": [
+      "Read(.env*)",
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)",
+      "Edit(.git/**)",
+      "Edit(package-lock.json)",
+      "mcp__*"
+    ],
+    "ask": ["WebFetch", "Bash(docker:*)"]
+  }
+}
