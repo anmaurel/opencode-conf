@@ -30,6 +30,8 @@ Generate a spec from the user's command message.
 
 If the message is empty, ask for the feature or change to specify. If it points to an existing `.md` spec, explain that implementation now uses `/implement-spec <path>` and stop.
 
+If the message is a ticket key from the project's issue tracker (e.g. `PROJ-1234`), follow the "Ticket input" workflow below before building the spec.
+
 ## Operating rules
 
 - Use OpenCode native tools first: `glob`, `grep`, `read`, and `task` for codebase mapping and parallel specialist analysis.
@@ -74,6 +76,18 @@ All review/planning subagents must answer with these headings only:
 - Read only the selected notes, preferably narrow sections when possible.
 - Extract only actionable constraints into the spec: decisions, business rules, API contracts, design constraints, test expectations, and known open questions.
 - If no relevant wiki notes are found, state that explicitly in the final report and avoid inventing context.
+
+## Ticket input
+
+Requires an issue-tracker MCP server (e.g. `mcp-atlassian` for Jira) configured in this project's `opencode.json`. Skip this section entirely if none is configured.
+
+When the command message is a ticket key matching this project's tracker prefix (e.g. `PROJ-\d+`):
+
+1. Call the tracker's "get issue" tool for `<key>` — read title, description, acceptance criteria, and sub-tasks. With `mcp-atlassian`, this is exposed as an MCP tool prefixed with the server name (verify the exact registered name locally, e.g. via `/mcp`); referred to below as `jira_get_issue` for brevity.
+2. For each sub-task tagged with a backend/service label, check its description for a linked merge request. If a related backend repo is checked out locally, read that MR's diff (`git log --all --oneline | grep <key>`) to identify exact field names, types, nullability, and which class carries the field. If the repo or MR is not found, state that gap explicitly in the final report rather than guessing the contract.
+3. Cross-check with `docs/wiki/` for existing notes on the affected feature/API.
+4. Use the tracker's search tool (`jira_search`) only if the initial issue fetch leaves sub-tasks or linked issues unresolved.
+5. Continue with the normal workflow below using the ticket's content as the feature description. Never include the ticket key itself in the generated spec (slug, title, body, tags, or metadata) — per spec conventions.
 
 ## Workflow
 
