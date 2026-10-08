@@ -9,6 +9,7 @@ permission:
     "*": ask
     "git status*": allow
   webfetch: ask
+  question: allow
   task:
     "*": deny
     "explore": allow
@@ -20,6 +21,7 @@ permission:
     "security-reviewer": allow
     "accessibility-reviewer": allow
     "design-reviewer": allow
+    "design-critic": allow
     "performance-reviewer": allow
     "dependency-reviewer": allow
     "docs-reviewer": allow
@@ -29,6 +31,13 @@ permission:
 Generate a spec from the user's command message.
 
 If the message is empty, ask for the feature or change to specify. If it points to an existing `.md` spec, explain that implementation now uses `/implement-spec <path>` and stop.
+
+## Collaboration before writing
+
+- Do not create or modify files during the first `/spec` response.
+- First explore the relevant context, summarize the proposed scope, and ask focused questions to resolve product behavior, constraints, acceptance criteria, and open decisions.
+- Iterate on the outline with the user until they explicitly confirm that the spec is ready to write.
+- Create files in `docs/specs/` only after that explicit confirmation. If the user changes the scope afterwards, discuss the changes before updating the spec.
 
 If the message is a ticket key from the project's issue tracker (e.g. `PROJ-1234`), follow the "Ticket input" workflow below before building the spec.
 
@@ -112,13 +121,15 @@ When the command message is a ticket key matching this project's tracker prefix 
    - `api-contract-reviewer` only when APIs/data contracts are involved
    - `security-reviewer` only when auth, permissions, user input, sensitive data, payments, files, or network boundaries are involved
    - `accessibility-reviewer` and `design-reviewer` only when UI/user flows are involved
+   - `design-critic` only for new pages/flows or major visual changes, to feed the spec's "UX / Design" section; if `PRODUCT.md`/`DESIGN.md` are missing, recommend `/design-init` in the report
    - `performance-reviewer` only when data volume, rendering, network, background jobs, or scalability matters
    - `dependency-reviewer` only when adding or changing dependencies is likely
    - `docs-reviewer` only when docs/spec consistency is a risk
    - `test-strategist` only for complex behavior or unclear edge cases
-5. Read `docs/specs/_template.md`.
-6. Create multiple small specs in `docs/specs/` when the request contains multiple independent features or slices. Use one lowercase-hyphenated file per slice/epic.
-7. Fill every section:
+5. Present the proposed spec outline and questions to the user. Wait for explicit confirmation before continuing.
+6. After confirmation, read `docs/specs/_template.md`.
+7. Create multiple small specs in `docs/specs/` when the request contains multiple independent features or slices. Use one lowercase-hyphenated file per slice/epic.
+8. Fill every section:
    - acceptance criteria: observable and testable
    - APIs involved: real endpoints/types when found, otherwise clearly mark assumptions
    - components/modules: actual files when found
@@ -127,8 +138,8 @@ When the command message is a ticket key matching this project's tracker prefix 
    - wiki links: only relevant `[[filename]]`, no `.md`
    - wiki-derived constraints: decisions, business rules, API contracts, design constraints, and open questions found in the selected notes
    - implementation slices: IDs, dependencies, parallelization group, suggested agent(s), likely files
-8. Set frontmatter `status: draft`.
-9. Add a short implementation order: sequential blockers first, then parallel groups.
+9. Set frontmatter `status: draft`.
+10. Add a short implementation order: sequential blockers first, then parallel groups.
 
 ## Final report
 

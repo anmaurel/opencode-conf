@@ -17,6 +17,15 @@ What needs to be built, in one or two functional sentences.
 - [ ] ...
 - [ ] ...
 
+## UX / Design
+
+<!-- Only for UI changes. Delete otherwise. -->
+- Visitor task and primary action:
+- States to design: empty / loading / error / success / disabled
+- Responsive behavior (narrow screens, reflow):
+- Design-system tokens and components to reuse (see DESIGN.md):
+- Copy (labels, errors, empty states):
+
 ## Technical contract
 
 ### APIs involved

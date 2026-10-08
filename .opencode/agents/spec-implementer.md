@@ -33,6 +33,7 @@ permission:
     "security-reviewer": allow
     "accessibility-reviewer": allow
     "design-reviewer": allow
+    "design-critic": allow
     "performance-reviewer": allow
     "dependency-reviewer": allow
     "docs-reviewer": allow
@@ -104,6 +105,7 @@ If two slices touch the same file or test file, do not parallelize them; run seq
    - `security-reviewer` for auth, permissions, input, secrets, sensitive data, files, payments, or network boundaries
    - `accessibility-reviewer` for UI/user flows
    - `design-reviewer` for UI/UX consistency and states
+   - `design-critic` for new pages/flows or major visual changes (task fit, hierarchy, slop), not for small UI tweaks
    - `performance-reviewer` for data volume, rendering, network, or scalability risk
    - `test-strategist` for edge cases and verification matrix
 4. Assign implementation packages:
@@ -122,10 +124,10 @@ If two slices touch the same file or test file, do not parallelize them; run seq
    - RED failing test first
    - GREEN minimal implementation
    - REFACTOR with tests green
-7. Run targeted tests first, then lint/typecheck when appropriate. Prefer Bun commands:
+7. Run targeted tests first, then lint/typecheck when appropriate, scoped to the touched files only. Prefer Bun commands:
    - `bunx vitest run <spec-file>` or the repo's targeted test command
-   - `bun run lint`
-   - `bunx tsc --noEmit`
+   - the project's linters/formatters run on the changed files only (e.g. `bunx eslint --fix <files>`), not the project-wide lint script
+   - `bunx tsc --noEmit` once, filtered (grep the output) to the touched file paths rather than reading every reported error. To check whether an error is pre-existing, grep the output for the touched paths instead of stashing and re-running the full typecheck — a stash/unstash round-trip doubles the cost for the same answer.
 8. After meaningful code changes, prepare and review the modified diff only:
    - run `diff-preparer` first when more than one file changed or any reviewer will be launched
    - provide each reviewer with changed file paths, relevant diff hunks, and the related acceptance criteria
@@ -135,7 +137,9 @@ If two slices touch the same file or test file, do not parallelize them; run seq
    - use `dependency-reviewer` when dependency files or imports changed
    - use `docs-reviewer` when README, AGENTS, DESIGN, wiki, or specs changed
    - use specialist reviewers only when their trigger appears in the modified diff
-9. Set spec frontmatter `status: done` only after required verification passes or clearly report why it remains incomplete.
+   - for a small, single-concern diff, do not launch both `product-reviewer` and `accessibility-reviewer` by default — pick whichever trigger dominates (e.g. a pure markup/ARIA fix with unambiguous acceptance criteria needs only `accessibility-reviewer`; a logic-only change with no UI surface needs only `product-reviewer`). Launch both only when the diff has both a non-trivial acceptance-criteria question and real accessibility surface.
+9. Never run the full test suite, the project-wide lint script, or a project-wide `tsc --noEmit` — not as an intermediate step, and not as a final check either. CI and pre-push hooks already cover the full-repo run; re-running it here only doubles token cost for the same guarantee. Scoped verification against the touched files (step 7) is sufficient to set `status: done`.
+10. Set spec frontmatter `status: done` only after required scoped verification passes or clearly report why it remains incomplete.
 
 ## Final report
 

@@ -1,7 +1,7 @@
 ---
 description: Generate an implementation-ready spec
 agent: spec-writer
-subtask: true
+subtask: false
 ---
 
 Generate an implementation-ready spec from this description:

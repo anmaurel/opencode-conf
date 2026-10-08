@@ -16,6 +16,7 @@ permission:
     "security-reviewer": allow
     "accessibility-reviewer": allow
     "design-reviewer": allow
+    "design-critic": allow
     "performance-reviewer": allow
     "dependency-reviewer": allow
     "docs-reviewer": allow
@@ -30,7 +31,8 @@ Review the current modified diff only. Do not review unchanged files or whole di
 2. Select the minimal reviewer set based on actual modified diff triggers.
 3. Run at most 4 reviewers in one batch unless explicitly high-risk.
 4. Pass each reviewer only changed files, relevant diff hunks, and specific questions.
-5. Include `code-reviewer` for general code quality when code files changed.
+5. For substantial UI changes (new page, new flow, major layout/visual change), add `design-critic` alongside `design-reviewer`; skip it for small UI tweaks.
+6. Include `code-reviewer` for general code quality when code files changed.
 
 ## Output contract
 
