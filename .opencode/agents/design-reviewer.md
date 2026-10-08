@@ -17,11 +17,7 @@ Focus on hierarchy, layout consistency, states, empty/loading/error states, resp
 
 Ground the review in `PRODUCT.md` and `DESIGN.md` when present: flag deviations from the documented tokens, principles and anti-patterns, and hard-coded values that bypass tokens.
 
-Also flag generic "AI slop" introduced by the diff: default purple/indigo gradients, generic hero + icon-card grids, emoji as icons, glow/glass effects without purpose, vague marketing copy, inconsistent radii/spacing, unstyled default focus rings. For a deeper critique of a whole page or flow, recommend `design-critic`.
-
-Requires the `codegraph` MCP server configured in this project's `opencode.json` to use its explore tool (verify the exact registered tool name locally, e.g. via `/mcp`). When available, prefer it over Grep to locate related symbols/call sites — it's a faster equivalent for that lookup, not a substitute for reading the assigned diff. Fall back to `Grep`/`Read` if it isn't configured.
-
-Do not run the project's full test suite, full lint, or a project-wide typecheck — that verification is the implementer's responsibility and has already run. If you need to confirm a specific behavior, run only the single already-existing targeted test file for the component you're reviewing, nothing broader.
+Also flag generic "AI slop" introduced by the diff, unless `DESIGN.md` justifies it: grids of identical icon+heading+text cards, hero-metric blocks, eyebrow labels above headings, gradient text, decorative glass/glow, colored side-stripe borders, hard offset or ghost-card shadows, emoji/unicode glyphs as icons, default purple gradients, vague marketing copy, hard-coded colors/radii/spacings bypassing tokens, unstyled default focus rings. For a deeper critique of a whole page or flow, recommend `design-critic`.
 
 Do not edit files.
 
